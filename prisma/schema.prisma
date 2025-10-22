@@ -13,3 +13,467 @@ datasource db {
   url       = env("POSTGRES_URL")
   directUrl = env("DATABASE_URL")
 }
+
+// ============================================
+// AUTHENTICATION & USER MANAGEMENT
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  username      String    @unique
+  password      String?   // Null for OAuth users
+  displayName   String?
+  bio           String?   @db.Text
+  avatarUrl     String?
+  
+  // OAuth fields
+  emailVerified DateTime?
+  image         String?
+  
+  // Settings
+  theme         String    @default("light") // light, dark, auto
+  isPublic      Boolean   @default(true)
+  
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  snippets      Snippet[]
+  likes         Like[]
+  bookmarks     Bookmark[]
+  comments      Comment[]
+  problems      Problem[]
+  submissions   Submission[]
+  collections   Collection[]
+  
+  // Social
+  followers     Follow[]  @relation("UserFollowers")
+  following     Follow[]  @relation("UserFollowing")
+  
+  // Messaging
+  sentMessages      Message[] @relation("SentMessages")
+  conversations     ConversationParticipant[]
+  
+  // Notifications
+  notifications Notification[]
+  
+  // NextAuth
+  accounts      Account[]
+  sessions      Session[]
+  
+  @@index([email])
+  @@index([username])
+  @@map("users")
+}
+
+// NextAuth Models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ============================================
+// SNIPPET MANAGEMENT
+// ============================================
+
+model Snippet {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  description String?   @db.Text
+  code        String    @db.Text
+  language    String
+  topic       String?
+  
+  // Visibility
+  isPublic    Boolean   @default(true)
+  
+  // Metrics
+  viewCount   Int       @default(0)
+  likeCount   Int       @default(0)
+  bookmarkCount Int     @default(0)
+  commentCount  Int     @default(0)
+  
+  // Code Analysis
+  complexity       String?  // O(n), O(n²), etc.
+  complexityScore  Float?   // 0-1 confidence
+  
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+  
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  tags        Tag[]
+  likes       Like[]
+  bookmarks   Bookmark[]
+  comments    Comment[]
+  
+  // Collections
+  collectionItems CollectionItem[]
+  
+  // Link to problem solution
+  problemId   String?
+  problem     Problem?  @relation(fields: [problemId], references: [id])
+  
+  @@index([slug])
+  @@index([authorId])
+  @@index([language])
+  @@index([topic])
+  @@index([isPublic])
+  @@index([createdAt(sort: Desc)])
+  @@index([problemId])
+  @@map("snippets")
+}
+
+// ============================================
+// TAG SYSTEM
+// ============================================
+
+model Tag {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  count     Int       @default(0)
+  
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  snippets  Snippet[]
+  problems  Problem[]
+  
+  @@index([slug])
+  @@index([name])
+  @@index([count(sort: Desc)])
+  @@map("tags")
+}
+
+// ============================================
+// ENGAGEMENT FEATURES
+// ============================================
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  snippetId String
+  createdAt DateTime @default(now())
+  
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  snippet Snippet @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, snippetId])
+  @@index([userId])
+  @@index([snippetId])
+  @@map("likes")
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  snippetId String
+  createdAt DateTime @default(now())
+  
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  snippet Snippet @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, snippetId])
+  @@index([userId])
+  @@index([snippetId])
+  @@map("bookmarks")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  
+  userId    String
+  snippetId String
+  
+  // Nested comments
+  parentId  String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  snippet   Snippet   @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
+  
+  @@index([userId])
+  @@index([snippetId])
+  @@index([parentId])
+  @@index([createdAt(sort: Desc)])
+  @@map("comments")
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String   // User who follows
+  followingId String   // User being followed
+  createdAt   DateTime @default(now())
+  
+  follower  User @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+  
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@map("follows")
+}
+
+// ============================================
+// COLLECTIONS
+// ============================================
+
+model Collection {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  slug        String   @unique
+  
+  isPublic    Boolean  @default(true)
+  
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  items       CollectionItem[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([authorId])
+  @@index([slug])
+  @@map("collections")
+}
+
+model CollectionItem {
+  id           String   @id @default(cuid())
+  collectionId String
+  snippetId    String
+  order        Int      @default(0)
+  
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  snippet    Snippet    @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+  
+  createdAt  DateTime   @default(now())
+  
+  @@unique([collectionId, snippetId])
+  @@index([collectionId])
+  @@index([snippetId])
+  @@map("collection_items")
+}
+
+// ============================================
+// CODING PROBLEMS & SUBMISSIONS
+// ============================================
+
+model Problem {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String   @db.Text
+  
+  // Problem details
+  difficulty  String   // easy, medium, hard
+  timeLimit   Int?     // milliseconds
+  memoryLimit Int?     // MB
+  
+  // Test cases
+  testCases   Json     // Array of {input, expectedOutput}
+  
+  // Starter code
+  starterCode Json?    // {language: code}
+  
+  // Constraints
+  constraints String?  @db.Text
+  hints       String?  @db.Text
+  
+  // Metrics
+  totalAttempts  Int @default(0)
+  totalSolved    Int @default(0)
+  
+  // Author
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  // Relations
+  tags        Tag[]
+  submissions Submission[]
+  solutions   Snippet[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([authorId])
+  @@index([slug])
+  @@index([difficulty])
+  @@map("problems")
+}
+
+model Submission {
+  id        String   @id @default(cuid())
+  code      String   @db.Text
+  language  String
+  
+  // Results
+  status    String   // pending, running, accepted, wrong_answer, error, timeout
+  runtime   Int?     // milliseconds
+  memory    Int?     // KB
+  
+  // Test results
+  testResults Json?  // Array of {passed, output, error}
+  
+  userId    String
+  problemId String
+  
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([problemId])
+  @@index([status])
+  @@index([createdAt(sort: Desc)])
+  @@map("submissions")
+}
+
+// ============================================
+// MESSAGING SYSTEM
+// ============================================
+
+model Conversation {
+  id        String   @id @default(cuid())
+  
+  // Type: direct (1-1) or group
+  type      String   @default("direct")
+  title     String?  // For group chats
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  participants ConversationParticipant[]
+  messages     Message[]
+  
+  @@map("conversations")
+}
+
+model ConversationParticipant {
+  id             String   @id @default(cuid())
+  conversationId String
+  userId         String
+  
+  // Last read message
+  lastReadAt     DateTime?
+  
+  joinedAt       DateTime @default(now())
+  
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([conversationId, userId])
+  @@index([conversationId])
+  @@index([userId])
+  @@map("conversation_participants")
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  content        String   @db.Text
+  
+  // Attachments (optional)
+  attachments    Json?    // URLs to files/images
+  
+  senderId       String
+  conversationId String
+  
+  // Message status
+  isRead         Boolean  @default(false)
+  isEdited       Boolean  @default(false)
+  
+  sender       User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  @@index([senderId])
+  @@index([conversationId])
+  @@index([createdAt(sort: Desc)])
+  @@map("messages")
+}
+
+// ============================================
+// NOTIFICATION SYSTEM
+// ============================================
+
+model Notification {
+  id        String   @id @default(cuid())
+  
+  // Notification type
+  type      String   // like, comment, follow, message, submission_result, etc.
+  
+  // Notification content
+  title     String
+  message   String   @db.Text
+  
+  // Link to related entity
+  entityType String? // snippet, problem, user, message
+  entityId   String?
+  
+  // Status
+  isRead    Boolean  @default(false)
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt(sort: Desc)])
+  @@map("notifications")
+}
