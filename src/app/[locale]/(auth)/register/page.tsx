@@ -71,8 +71,12 @@ export default function RegisterPage() {
 
       router.push("/");
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An error occurred");
+      }
     } finally {
       setIsLoading(false);
     }

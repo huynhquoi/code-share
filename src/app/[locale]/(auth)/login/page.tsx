@@ -56,8 +56,12 @@ export default function LoginPage() {
 
       router.push(callbackUrl);
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || "Invalid credentials");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Invalid credentials");
+      }
     } finally {
       setIsLoading(false);
     }
