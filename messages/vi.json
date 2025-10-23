@@ -1,0 +1,49 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "snippets": "Đoạn mã",
+    "tags": "Thẻ",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "logout": "Đăng xuất",
+    "profile": "Hồ sơ",
+    "mySnippets": "Mã của tôi",
+    "newSnippet": "Tạo đoạn mã",
+    "menu": "Menu"
+  },
+  "auth": {
+    "login": {
+      "title": "Chào trở lại!",
+      "subtitle": "Đăng nhập vào tài khoản của bạn"
+    },
+    "register": {
+      "title": "Tạo tài khoản mới",
+      "subtitle": "Nhập thông tin của bạn để đăng ký"
+    },
+    "email": "Email",
+    "emailPlaceholder": "nam@example.com",
+    "username": "Tên người dùng",
+    "usernamePlaceholder": "johndoe",
+    "displayName": "Tên hiển thị",
+    "displayNamePlaceholder": "John Doe",
+    "password": "Mật khẩu",
+    "passwordPlaceholder": "********",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "confirmPasswordPlaceholder": "********"
+  },
+  "home": {
+    "title": "Nền tảng chia sẻ code",
+    "subtitle": "Chia sẻ đoạn mã, gắn thẻ theo ngôn ngữ và chủ đề, khám phá giải pháp từ cộng đồng",
+    "getStarted": "Bắt đầu",
+    "createSnippet": "Tạo đoạn mã",
+    "login": "Đăng nhập"
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận",
+    "close": "Đóng"
+  }
+}

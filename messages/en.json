@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "home": "Home",
+    "snippets": "Snippets",
+    "tags": "Tags",
+    "login": "Login",
+    "register": "Sign Up",
+    "logout": "Logout",
+    "profile": "Profile",
+    "mySnippets": "My Snippets",
+    "newSnippet": "New Snippet",
+    "menu": "Menu"
+  },
+  "auth": {
+    "wellcome": "Welcome to Code Snippet Platform",
+    "loginTitle": "Login to your account",
+    "registerTitle": "Create an account",
+    "registerSubtitle": "Sign up to start sharing snippets",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "passwordPlaceholderR": "Create a password (min 6 characters)",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "displayName": "Display Name",
+    "displayNamePlaceholder": "Enter your display name",
+    "submit": "Submit",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "signUp": "Sign up",
+    "loggedOut": "You have been logged out successfully",
+    "logoutFailed": "Failed to logout",
+    "register": "Register",
+    "login": "Login",
+    "loggingIn": "Logging in...",
+    "creatingAccount": "Creating account...",
+    "createAccount": "Create Account"
+  },
+  "home": {
+    "title": "Code Snippet Platform",
+    "subtitle": "Share code snippets, tag them by language and topic, and discover solutions from the community",
+    "getStarted": "Get Started",
+    "createSnippet": "Create Snippet",
+    "login": "Login"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close"
+  }
+}
