@@ -1,5 +1,3 @@
-// src/lib/auth.ts
-
 import NextAuth, { NextAuthConfig } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Credentials from "next-auth/providers/credentials";
@@ -94,6 +92,13 @@ export const authConfig: NextAuthConfig = {
         session.user.username = token.username as string;
       }
       return session;
+    },
+
+    async redirect({ url, baseUrl }) {
+      // Handle i18n redirects
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
     },
 
     async signIn({ user, account }) {

@@ -1,16 +1,23 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
+interface AuthLayoutProps {
+  children: React.ReactNode;
+  params: {
+    locale: string;
+  };
+}
+
 export default async function AuthLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  params,
+}: AuthLayoutProps) {
   const session = await auth();
+  const resloveParams = await params;
+  const { locale } = resloveParams;
 
-  // Redirect if already logged in
   if (session) {
-    redirect("/");
+    redirect(`/${locale}`);
   }
 
   return (

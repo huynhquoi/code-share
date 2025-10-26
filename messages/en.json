@@ -12,30 +12,57 @@
     "menu": "Menu"
   },
   "auth": {
-    "wellcome": "Welcome to Code Snippet Platform",
-    "loginTitle": "Login to your account",
-    "registerTitle": "Create an account",
-    "registerSubtitle": "Sign up to start sharing snippets",
-    "email": "Email",
-    "emailPlaceholder": "Enter your email",
-    "password": "Password",
-    "passwordPlaceholder": "Enter your password",
-    "passwordPlaceholderR": "Create a password (min 6 characters)",
-    "confirmPassword": "Confirm Password",
-    "confirmPasswordPlaceholder": "Re-enter your password",
-    "displayName": "Display Name",
-    "displayNamePlaceholder": "Enter your display name",
-    "submit": "Submit",
-    "noAccount": "Don't have an account?",
-    "haveAccount": "Already have an account?",
-    "signUp": "Sign up",
-    "loggedOut": "You have been logged out successfully",
-    "logoutFailed": "Failed to logout",
-    "register": "Register",
-    "login": "Login",
-    "loggingIn": "Logging in...",
-    "creatingAccount": "Creating account...",
-    "createAccount": "Create Account"
+    "login": {
+      "title": "Welcome back",
+      "description": "Sign in to your account to continue",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up"
+    },
+    "register": {
+      "title": "Create an account",
+      "description": "Enter your details to get started",
+      "alreadyHaveAccount": "Already have an account?",
+      "signIn": "Sign in"
+    },
+    "form": {
+      "email": "Email",
+      "emailPlaceholder": "name@example.com",
+      "username": "Username",
+      "usernamePlaceholder": "johndoe",
+      "displayName": "Display Name (Optional)",
+      "displayNamePlaceholder": "John Doe",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "••••••••",
+      "submitRegister": "Create Account",
+      "loadingRegister": "Creating Account...",
+      "submitLogin": "Login",
+      "loadingLogin": "Logging in...",
+      "continueWith": "Or continue with",
+      "forgotPassword": "Forgot Password?"
+    },
+    "validations": {
+      "invalidEmail": "Invalid email address",
+      "requiredEmail": "Email is required",
+      "requiredPassword": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "passwordMaxLength": "Password must not exceed 100 characters",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "passwordConfirm": "Please confirm your password",
+      "usernameMinLength": "Username must be at least 3 characters",
+      "usernameMaxLength": "Username must not exceed 20 characters",
+      "usernameContains": "Username can only contain letters, numbers, and underscores",
+      "displayNameMaxLength": "Display name must not exceed 50 characters"
+    },
+    "notifications": {
+      "registerSuccess": "Registration successful! You can now log in.",
+      "registerFailed": "Registration failed. Please try again.",
+      "loginFailedAfterRegister": "Login failed after registration. Please try logging in manually.",
+      "somethingWentWrong": "Something went wrong. Please try again.",
+      "loginSuccess": "Login successful! Welcome back.",
+      "invalidCredentials": "Invalid login credentials. Please check your email and password."
+    }
   },
   "home": {
     "title": "Code Snippet Platform",

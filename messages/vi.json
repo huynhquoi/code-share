@@ -13,23 +13,56 @@
   },
   "auth": {
     "login": {
-      "title": "Chào trở lại!",
-      "subtitle": "Đăng nhập vào tài khoản của bạn"
+      "title": "Chào mừng bạn trở lại",
+      "description": "Đăng nhập vào tài khoản của bạn để tiếp tục",
+      "noAccount": "Bạn chưa có tài khoản?",
+      "signUp": "Đăng ký" 
     },
     "register": {
-      "title": "Tạo tài khoản mới",
-      "subtitle": "Nhập thông tin của bạn để đăng ký"
+      "title": "Tạo tài khoản",
+      "description": "Nhập thông tin của bạn để bắt đầu",
+      "alreadyHaveAccount": "Đã có tài khoản?",
+      "signIn": "Đăng nhập"
     },
-    "email": "Email",
-    "emailPlaceholder": "nam@example.com",
-    "username": "Tên người dùng",
-    "usernamePlaceholder": "johndoe",
-    "displayName": "Tên hiển thị",
-    "displayNamePlaceholder": "John Doe",
-    "password": "Mật khẩu",
-    "passwordPlaceholder": "********",
-    "confirmPassword": "Xác nhận mật khẩu",
-    "confirmPasswordPlaceholder": "********"
+    "form": {
+      "email": "Email",
+      "emailPlaceholder": "name@example.com",
+      "username": "Tên người dùng",
+      "usernamePlaceholder": "johndoe",
+      "displayName": "Tên hiển thị (Tùy chọn)",
+      "displayNamePlaceholder": "John Doe",
+      "password": "Mật khẩu",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "confirmPasswordPlaceholder": "••••••••",
+      "submitRegister": "Tạo tài khoản",
+      "loadingRegister": "Đang tạo tài khoản...",
+      "submitLogin": "Đăng nhập",
+      "loadingLogin": "Đang đăng nhập...",
+      "continueWith": "Hoặc tiếp tục với",
+      "forgotPassword": "Quên mật khẩu?"
+    },
+    "validations": {
+      "invalidEmail": "Địa chỉ email không hợp lệ",
+      "requiredEmail": "Email là bắt buộc",
+      "requiredPassword": "Mật khẩu là bắt buộc",
+      "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự",
+      "passwordMaxLength": "Mật khẩu không được vượt quá 100 ký tự",
+      "passwordsDoNotMatch": "Mật khẩu không khớp",
+      "passwordConfirm": "Vui lòng xác nhận mật khẩu",
+      "usernameMinLength": "Tên người dùng phải có ít nhất 3 ký tự",
+      "usernameMaxLength": "Tên người dùng không được vượt quá 20 ký tự",
+      "usernameContains": "Tên người dùng chỉ được chứa chữ cái, số và dấu gạch dưới",
+      "displayNameMaxLength": "Tên hiển thị không được vượt quá 50 ký tự"
+    },
+    "notifications": {
+      "registerSuccess": "Đăng ký thành công! Bạn đã có thể đăng nhập.",
+      "registerFailed": "Đăng ký thất bại. Vui lòng thử lại.",
+      "loginFailedAfterRegister": "Đăng nhập thất bại sau khi đăng ký. Vui lòng thử đăng nhập thủ công.",
+      "somethingWentWrong": "Đã xảy ra lỗi. Vui lòng thử lại.",
+      "loginSuccess": "Đăng nhập thành công! Chào mừng bạn trở lại.",
+      "invalidCredentials": "Thông tin đăng nhập không hợp lệ. Vui lòng kiểm tra email và mật khẩu của bạn."
+    }
   },
   "home": {
     "title": "Nền tảng chia sẻ code",
