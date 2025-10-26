@@ -26,6 +26,7 @@ model User {
   displayName   String?
   bio           String?   @db.Text
   avatarUrl     String?
+  role          String    @default("USER") 
   
   // OAuth fields
   emailVerified DateTime?
