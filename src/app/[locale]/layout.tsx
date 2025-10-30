@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { locales } from "@/i18n/request";
 import { ThemeProvider } from "next-themes";
 import { NavBar } from "@/components/layout/NavBar";
+import { ErrorBoundary } from "@/components/error/error-boundary";
 
 // export const metadata: Metadata = {
 //   title: "Code Snippet Platform",
@@ -52,9 +53,11 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body>
         <ThemeProvider attribute="class" defaultTheme="system">
           <NextIntlClientProvider messages={messages}>
-            <NavBar />
-            <main>{children}</main>
-            <Toaster richColors position="top-right" />
+            <ErrorBoundary>
+              <NavBar />
+              <main>{children}</main>
+              <Toaster richColors position="top-right" />
+            </ErrorBoundary>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

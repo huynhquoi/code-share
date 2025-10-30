@@ -1,14 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { signIn } from "next-auth/react";
-import { toast } from "sonner";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { LoadingButton } from "@/components/custom-ui/loading-button";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -19,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useTranslations } from "next-intl";
+import { useAsync } from "@/hooks/use-async";
 
 export const createLoginSchema = (t: (key: string) => string) =>
   z.object({
@@ -34,11 +33,17 @@ interface LoginFormProps {
 
 export function LoginForm({ callbackUrl = "/" }: LoginFormProps) {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-
+  
   const v = useTranslations("auth.validations");
   const f = useTranslations("auth.form");
   const n = useTranslations("auth.notifications");
+
+  const { execute, isLoading } = useAsync({
+    successMessage: n("loginSuccess"),
+    errorMessage: n("invalidCredentials"),
+    showSuccessToast: true,
+    showErrorToast: true,
+  });
 
   const loginSchema = createLoginSchema(v);
 
@@ -51,9 +56,7 @@ export function LoginForm({ callbackUrl = "/" }: LoginFormProps) {
   });
 
   const onSubmit = async (values: LoginFormValues) => {
-    setIsLoading(true);
-
-    try {
+    await execute(async () => {
       const result = await signIn("credentials", {
         email: values.email,
         password: values.password,
@@ -64,18 +67,9 @@ export function LoginForm({ callbackUrl = "/" }: LoginFormProps) {
         throw new Error(result.error);
       }
 
-      toast.success(n("loginSuccess"));
       router.push(callbackUrl);
       router.refresh();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        toast.error(n("invalidCredentials") + ": " + error.message);
-      } else {
-        toast.error(n("invalidCredentials"));
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
   return (
@@ -119,9 +113,14 @@ export function LoginForm({ callbackUrl = "/" }: LoginFormProps) {
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? f("loadingLogin") : f("submitLogin")}
-        </Button>
+        <LoadingButton 
+          type="submit" 
+          className="w-full" 
+          isLoading={isLoading}
+          loadingText={f("loadingLogin")}
+        >
+          {f("submitLogin")}
+        </LoadingButton>
 
         <div className="text-right">
           <Link
