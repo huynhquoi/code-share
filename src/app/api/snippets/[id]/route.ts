@@ -17,8 +17,7 @@ type RouteParams = {
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     const session = await auth();
-    const resloveParams = await params
-    const snippetId = resloveParams.id;
+    const snippetId = params.id;
 
     const snippet = await prisma.snippet.findUnique({
       where: { id: snippetId },
@@ -66,8 +65,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const resloveParams = await params
-    const snippetId = resloveParams.id;
+    const snippetId = params.id;
 
     // Check if snippet exists and user owns it
     const existingSnippet = await prisma.snippet.findUnique({
@@ -141,8 +139,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const resloveParams = await params
-    const snippetId = resloveParams.id;
+    const snippetId = params.id;
 
     // Check if snippet exists and user owns it
     const existingSnippet = await prisma.snippet.findUnique({
