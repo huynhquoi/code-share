@@ -64,12 +64,26 @@
       "invalidCredentials": "Thông tin đăng nhập không hợp lệ. Vui lòng kiểm tra email và mật khẩu của bạn."
     }
   },
+  "snippet": {
+    "validations": {
+      "titleMinLength": "Tiêu đề phải có ít nhất 3 ký tự",
+      "titleMaxLength": "Tiêu đề không được vượt quá 100 ký tự",
+      "descriptionMaxLength": "Mô tả không được vượt quá 500 ký tự",
+      "descriptionMinLength": "Mô tả phải có ít nhất 10 ký tự",
+      "codeRequired": "Mã nguồn là bắt buộc",
+      "codeMaxLength": "Mã nguồn không được vượt quá 50000 ký tự",
+      "languageRequired": "Ngôn ngữ là bắt buộc",
+      "languageTooLong": "Ngôn ngữ quá dài"
+    }
+  },
   "home": {
     "title": "Nền tảng chia sẻ code",
     "subtitle": "Chia sẻ đoạn mã, gắn thẻ theo ngôn ngữ và chủ đề, khám phá giải pháp từ cộng đồng",
     "getStarted": "Bắt đầu",
     "createSnippet": "Tạo đoạn mã",
-    "login": "Đăng nhập"
+    "login": "Đăng nhập",
+    "recentSnippets": "Những đoạn mã hiện tại",
+    "exploreSnippets": "Những đoạn mã đã chia sẻ trên cộng đồng"
   },
   "common": {
     "loading": "Đang tải...",

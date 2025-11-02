@@ -64,12 +64,26 @@
       "invalidCredentials": "Invalid login credentials. Please check your email and password."
     }
   },
+  "snippet": {
+    "validations": {
+      "titleMinLength": "Title must be at least 3 characters",
+      "titleMaxLength": "Title must not exceed 100 characters",
+      "descriptionMaxLength": "Description must not exceed 500 characters",
+      "descriptionMinLength": "Description must be at least 10 characters",
+      "codeRequired": "Code is required",
+      "codeMaxLength": "Code must not exceed 50000 characters",
+      "languageRequired": "Language is required",
+      "languageTooLong": "Language is too long"
+    }
+  },
   "home": {
     "title": "Code Snippet Platform",
     "subtitle": "Share code snippets, tag them by language and topic, and discover solutions from the community",
     "getStarted": "Get Started",
     "createSnippet": "Create Snippet",
-    "login": "Login"
+    "login": "Login",
+    "recentSnippets": "Recent Snippets",
+    "exploreSnippets": "Explore code snippets shared by the community"
   },
   "common": {
     "loading": "Loading...",
