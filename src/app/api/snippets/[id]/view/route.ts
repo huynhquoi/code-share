@@ -1,20 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-type RouteParams = {
-  params: {
-    id: string;
-  };
-};
+interface Params {
+  id: string;
+}
 
 /**
  * POST /api/snippets/[id]/view
  * Increment view count for a snippet
  */
-export async function POST(request: NextRequest, { params }: RouteParams) {
+export async function POST(
+  request: NextRequest,
+  context: { params: Params } | { params: Promise<Params> }
+) {
   try {
-    const resloveParams = await params;
-    const snippetId = resloveParams.id;
+    const params = (await context.params) as Params;
+    const snippetId = params.id;
 
     // Check if snippet exists
     const snippet = await prisma.snippet.findUnique({

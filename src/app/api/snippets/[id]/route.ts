@@ -1,23 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { serverUpdateSnippetSchema } from '@/lib/validations/snippet.server';
+import { serverUpdateSnippetSchema } from "@/lib/validations/snippet.server";
 import { generateUniqueSlug } from "@/lib/snippets";
 
-type RouteParams = {
-  params: {
-    id: string;
-  };
-};
+interface Params {
+  id: string;
+}
 
 /**
  * GET /api/snippets/[id]
  * Get a single snippet by ID
  */
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(
+  request: NextRequest,
+  context: { params: Params } | { params: Promise<Params> }
+) {
+  const params = (await context.params) as Params;
+  const snippetId = params.id;
+
   try {
     const session = await auth();
-    const snippetId = params.id;
 
     const snippet = await prisma.snippet.findUnique({
       where: { id: snippetId },
@@ -57,15 +60,19 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
  * PUT /api/snippets/[id]
  * Update a snippet
  */
-export async function PUT(request: NextRequest, { params }: RouteParams) {
+export async function PUT(
+  request: NextRequest,
+  context: { params: Params } | { params: Promise<Params> }
+) {
+  const params = (await context.params) as Params;
+  const snippetId = params.id;
+
   try {
     const session = await auth();
 
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    const snippetId = params.id;
 
     // Check if snippet exists and user owns it
     const existingSnippet = await prisma.snippet.findUnique({
@@ -131,15 +138,19 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
  * DELETE /api/snippets/[id]
  * Delete a snippet
  */
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export async function DELETE(
+  request: NextRequest,
+  context: { params: Params } | { params: Promise<Params> }
+) {
+  const params = (await context.params) as Params;
+  const snippetId = params.id;
+
   try {
     const session = await auth();
 
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    const snippetId = params.id;
 
     // Check if snippet exists and user owns it
     const existingSnippet = await prisma.snippet.findUnique({
