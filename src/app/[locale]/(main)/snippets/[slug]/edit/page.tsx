@@ -34,7 +34,8 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }) {
-  const snippet = await getSnippet(params.slug);
+  const resloveParams = params;
+  const snippet = await getSnippet(resloveParams.slug);
 
   if (!snippet) {
     return {
@@ -77,15 +78,18 @@ export default async function EditSnippetPage({
           <CardDescription>Update your code snippet</CardDescription>
         </CardHeader>
         <CardContent>
-          <SnippetForm initialData={{
-            id: snippet.id,
-            slug: snippet.slug,
-            title: snippet.title,
-            description: snippet.description ?? undefined,
-            code: snippet.code,
-            language: snippet.language,
-            isPublic: snippet.isPublic,
-          }} isEditing />
+          <SnippetForm
+            initialData={{
+              id: snippet.id,
+              slug: snippet.slug,
+              title: snippet.title,
+              description: snippet.description ?? undefined,
+              code: snippet.code,
+              language: snippet.language,
+              isPublic: snippet.isPublic,
+            }}
+            isEditing
+          />
         </CardContent>
       </Card>
     </div>
